@@ -1,0 +1,18 @@
+on:
+  push:
+    branches: [ main ]
+ 
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: ssh deploy on aws ec2
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+        REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+        REMOTE_USER: ${{ secrets.DEPLOY_USERNAME }}
+        REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
+        SOURCE: "/"
+        TARGET: ${{ secrets.DEPLOY_TARGET }}
